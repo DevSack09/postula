@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import Checkbox from '@/Components/Checkbox';
-import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { motion } from 'framer-motion';
+import { Mail, Lock, LogIn, AlertCircle } from 'lucide-react';
+import GuestLayout from '@/Layouts/GuestLayout';
+import AnimatedInput from '@/Components/Login/AnimatedInput';
+import AnimatedButton from '@/Components/Login/AnimatedButton';
+import AnimatedCheckbox from '@/Components/Login/AnimatedCheckbox';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -22,76 +22,140 @@ export default function Login({ status, canResetPassword }) {
 
     const submit = (e) => {
         e.preventDefault();
-
         post(route('login'));
     };
 
     return (
         <GuestLayout>
-            <Head title="Log in" />
+            <Head title="Iniciar Sesión" />
 
-            {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
+            <div className="space-y-6">
+                {/* Header */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4, duration: 0.4 }}
+                    className="text-center"
+                >
+                    <h2 className="text-2xl font-bold text-slate-900">
+                        Bienvenido de nuevo
+                    </h2>
+                    <p className="mt-2 text-sm text-slate-600">
+                        Ingresa tus credenciales para continuar
+                    </p>
+                </motion.div>
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                {/* Status Message */}
+                {status && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        transition={{ duration: 0.3 }}
+                        className="p-4 bg-teal-50 border border-teal-300 rounded-lg flex items-center gap-3"
+                    >
+                        <AlertCircle className="text-teal-600" size={20} />
+                        <p className="text-sm text-teal-700">{status}</p>
+                    </motion.div>
+                )}
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        isFocused={true}
-                        onChange={(e) => setData('email', e.target.value)}
-                    />
+                {/* Form */}
+                <form onSubmit={submit} className="space-y-5">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5, duration: 0.4 }}
+                    >
+                        <AnimatedInput
+                            id="email"
+                            type="email"
+                            name="email"
+                            label="Correo electrónico"
+                            icon={Mail}
+                            value={data.email}
+                            error={errors.email}
+                            autoComplete="username"
+                            isFocused={true}
+                            onChange={(e) => setData('email', e.target.value)}
+                        />
+                    </motion.div>
 
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.6, duration: 0.4 }}
+                    >
+                        <AnimatedInput
+                            id="password"
+                            type="password"
+                            name="password"
+                            label="Contraseña"
+                            icon={Lock}
+                            value={data.password}
+                            error={errors.password}
+                            autoComplete="current-password"
+                            onChange={(e) => setData('password', e.target.value)}
+                        />
+                    </motion.div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="current-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="block mt-4">
-                    <label className="flex items-center">
-                        <Checkbox
+                    {/* Remember & Forgot Password */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.7, duration: 0.4 }}
+                        className="flex items-center justify-between"
+                    >
+                        <AnimatedCheckbox
                             name="remember"
                             checked={data.remember}
+                            label="Recordarme"
                             onChange={(e) => setData('remember', e.target.checked)}
                         />
-                        <span className="ms-2 text-sm text-gray-600">Remember me</span>
-                    </label>
-                </div>
 
-                <div className="flex items-center justify-end mt-4">
-                    {canResetPassword && (
-                        <Link
-                            href={route('password.request')}
-                            className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        {canResetPassword && (
+                            <Link
+                                href={route('password.request')}
+                                className="text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors duration-300"
+                            >
+                                ¿Olvidaste tu contraseña?
+                            </Link>
+                        )}
+                    </motion.div>
+
+                    {/* Submit Button */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.8, duration: 0.4 }}
+                    >
+                        <AnimatedButton
+                            type="submit"
+                            disabled={processing}
+                            icon={LogIn}
+                            className="w-full"
                         >
-                            Forgot your password?
-                        </Link>
-                    )}
+                            {processing ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+                        </AnimatedButton>
+                    </motion.div>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
-                    </PrimaryButton>
-                </div>
-            </form>
+                    {/* Register Link */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.9, duration: 0.4 }}
+                        className="text-center pt-4 border-t border-slate-200"
+                    >
+                        <p className="text-sm text-slate-600">
+                            ¿No tienes una cuenta?{' '}
+                            <Link
+                                href={route('register')}
+                                className="font-semibold text-teal-600 hover:text-teal-700 transition-colors duration-300"
+                            >
+                                Regístrate aquí
+                            </Link>
+                        </p>
+                    </motion.div>
+                </form>
+            </div>
         </GuestLayout>
     );
 }
