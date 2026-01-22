@@ -1,11 +1,14 @@
 import { forwardRef, useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Eye, EyeOff, CheckCircle2 } from 'lucide-react';
 
 export default forwardRef(function AnimatedInput({ 
     type = 'text', 
     label,
     icon: Icon,
     error,
+    showPasswordToggle = false,
+    isValid = false,
     className = '', 
     isFocused = false, 
     ...props 
@@ -13,6 +16,8 @@ export default forwardRef(function AnimatedInput({
     const input = ref ? ref : useRef();
     const [focused, setFocused] = useState(false);
     const [hasValue, setHasValue] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [inputType, setInputType] = useState(type);
 
     useEffect(() => {
         if (isFocused) {
@@ -23,6 +28,10 @@ export default forwardRef(function AnimatedInput({
     useEffect(() => {
         setHasValue(props.value && props.value.length > 0);
     }, [props.value]);
+
+    useEffect(() => {
+        setInputType(showPassword ? 'text' : type);
+    }, [showPassword, type]);
 
     return (
         <div className="relative">
@@ -47,16 +56,18 @@ export default forwardRef(function AnimatedInput({
                 
                 <motion.input
                     {...props}
-                    type={type}
+                    type={inputType}
                     className={`
                         w-full px-4 py-3.5 
                         ${Icon ? 'pl-12' : 'pl-4'}
+                        ${showPasswordToggle || isValid ? 'pr-12' : 'pr-4'}
                         bg-slate-50 border border-slate-200
                         rounded-lg
                         text-slate-900
                         focus:bg-white focus:border-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-600/10
                         transition-all duration-300
                         ${error ? 'border-red-400 focus:border-red-500' : ''}
+                        ${isValid && !error ? 'border-teal-500' : ''}
                         ${className}
                     `}
                     ref={input}
@@ -68,6 +79,53 @@ export default forwardRef(function AnimatedInput({
                         transition: { duration: 0.2, ease: "easeOut" }
                     }}
                 />
+
+                {/* Toggle password visibility */}
+                {showPasswordToggle && (
+                    <motion.button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-teal-600 transition-colors duration-200 z-10"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        tabIndex={-1}
+                    >
+                        <AnimatePresence mode="wait">
+                            {showPassword ? (
+                                <motion.div
+                                    key="eye-off"
+                                    initial={{ opacity: 0, rotate: -90 }}
+                                    animate={{ opacity: 1, rotate: 0 }}
+                                    exit={{ opacity: 0, rotate: 90 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    <EyeOff size={18} />
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    key="eye"
+                                    initial={{ opacity: 0, rotate: -90 }}
+                                    animate={{ opacity: 1, rotate: 0 }}
+                                    exit={{ opacity: 0, rotate: 90 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    <Eye size={18} />
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </motion.button>
+                )}
+
+                {/* Valid indicator */}
+                {isValid && !error && !showPasswordToggle && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-teal-600 z-10"
+                    >
+                        <CheckCircle2 size={18} />
+                    </motion.div>
+                )}
                 
                 <motion.label
                     className={`

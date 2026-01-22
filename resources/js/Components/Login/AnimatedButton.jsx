@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
 
 export default function AnimatedButton({ 
     children, 
     disabled, 
+    loading = false,
     className = '', 
     icon: Icon,
     variant = 'primary',
@@ -30,23 +32,28 @@ export default function AnimatedButton({
                 ${variants[variant]}
                 ${className}
             `}
-            disabled={disabled}
+            disabled={disabled || loading}
         >
-            {disabled && (
-                <motion.div
-                    className="absolute inset-0 bg-white/20"
-                    initial={{ x: '-100%' }}
-                    animate={{ x: '100%' }}
-                    transition={{ 
-                        repeat: Infinity, 
-                        duration: 1.5,
-                        ease: 'easeInOut'
-                    }}
-                />
+            {loading ? (
+                <>
+                    <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ 
+                            repeat: Infinity, 
+                            duration: 1,
+                            ease: 'linear'
+                        }}
+                    >
+                        <Loader2 size={18} />
+                    </motion.div>
+                    <span>{children}</span>
+                </>
+            ) : (
+                <>
+                    {Icon && <Icon size={18} />}
+                    <span>{children}</span>
+                </>
             )}
-            
-            {Icon && <Icon size={18} />}
-            <span>{children}</span>
         </motion.button>
     );
 }
