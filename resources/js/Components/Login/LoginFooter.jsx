@@ -14,13 +14,13 @@ export default function LoginFooter() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1, duration: 0.4 }}
-            className="flex items-center justify-center gap-4 pt-4 border-t border-slate-100"
+            className="flex items-center justify-center gap-4 pt-4 border-t border-slate-100 dark:border-slate-800"
         >
             {links.map((link, index) => (
                 <motion.a
                     key={link.label}
                     href={link.href}
-                    className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-teal-600 transition-colors duration-300"
+                    className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1 + (index * 0.1), duration: 0.3 }}

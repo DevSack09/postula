@@ -61,13 +61,13 @@ export default forwardRef(function AnimatedInput({
                         w-full px-4 py-3.5 
                         ${Icon ? 'pl-12' : 'pl-4'}
                         ${showPasswordToggle || isValid ? 'pr-12' : 'pr-4'}
-                        bg-slate-50 border border-slate-200
+                        bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700
                         rounded-lg
-                        text-slate-900
-                        focus:bg-white focus:border-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-600/10
+                        text-slate-900 dark:text-white
+                        focus:bg-white dark:focus:bg-slate-900 focus:border-teal-600 dark:focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-600/10 dark:focus:ring-teal-500/20
                         transition-all duration-300
                         ${error ? 'border-red-400 focus:border-red-500' : ''}
-                        ${isValid && !error ? 'border-teal-500' : ''}
+                        ${isValid && !error ? 'border-teal-500 dark:border-teal-600' : ''}
                         ${className}
                     `}
                     ref={input}
@@ -85,7 +85,7 @@ export default forwardRef(function AnimatedInput({
                     <motion.button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-teal-600 transition-colors duration-200 z-10"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-200 z-10"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         tabIndex={-1}
@@ -133,8 +133,8 @@ export default forwardRef(function AnimatedInput({
                         transition-all duration-300
                         ${Icon ? 'pl-8' : 'pl-0'}
                         ${focused || hasValue 
-                            ? '-top-2.5 text-xs bg-white px-2 text-teal-600 font-medium' 
-                            : 'top-1/2 -translate-y-1/2 text-slate-500'
+                            ? '-top-2.5 text-xs bg-white dark:bg-slate-800 px-2 text-teal-600 dark:text-teal-400 font-medium' 
+                            : 'top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400'
                         }
                         ${error && !focused ? 'text-red-500' : ''}
                     `}

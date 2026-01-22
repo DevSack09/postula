@@ -127,10 +127,10 @@ function LoginContent({ status, canResetPassword }) {
                             )}
                         </AnimatePresence>
 
-                        <h2 className="text-2xl font-bold text-slate-900">
+                        <h2 className="text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">
                             Bienvenido de nuevo
                         </h2>
-                        <p className="mt-2 text-sm text-slate-600">
+                        <p className="mt-2 text-sm text-slate-600 dark:text-slate-400 transition-colors duration-300">
                             Ingresa tus credenciales para continuar
                         </p>
                     </motion.div>
@@ -141,10 +141,10 @@ function LoginContent({ status, canResetPassword }) {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         transition={{ duration: 0.3 }}
-                        className="p-4 bg-teal-50 border border-teal-300 rounded-lg flex items-center gap-3"
+                        className="p-4 bg-teal-50 dark:bg-teal-900/30 border border-teal-300 dark:border-teal-700 rounded-lg flex items-center gap-3 transition-colors duration-300"
                     >
-                        <AlertCircle className="text-teal-600" size={20} />
-                        <p className="text-sm text-teal-700">{status}</p>
+                        <AlertCircle className="text-teal-600 dark:text-teal-400" size={20} />
+                        <p className="text-sm text-teal-700 dark:text-teal-300">{status}</p>
                     </motion.div>
                 )}
 
@@ -231,7 +231,7 @@ function LoginContent({ status, canResetPassword }) {
                         {canResetPassword && (
                             <Link
                                 href={route('password.request')}
-                                className="text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors duration-300"
+                                className="text-sm font-medium text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 transition-colors duration-300"
                             >
                                 ¿Olvidaste tu contraseña?
                             </Link>
@@ -264,10 +264,10 @@ function LoginContent({ status, canResetPassword }) {
                         className="relative"
                     >
                         <div className="absolute inset-0 flex items-center">
-                            <div className="w-full border-t border-slate-200"></div>
+                            <div className="w-full border-t border-slate-200 dark:border-slate-700"></div>
                         </div>
                         <div className="relative flex justify-center text-sm">
-                            <span className="px-2 bg-white text-slate-500">O continúa con</span>
+                            <span className="px-2 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400">O continúa con</span>
                         </div>
                     </motion.div>
 
@@ -290,13 +290,13 @@ function LoginContent({ status, canResetPassword }) {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.95, duration: 0.4 }}
-                        className="text-center pt-4 border-t border-slate-200"
+                        className="text-center pt-4 border-t border-slate-200 dark:border-slate-700"
                     >
-                        <p className="text-sm text-slate-600">
+                        <p className="text-sm text-slate-600 dark:text-slate-400">
                             ¿No tienes una cuenta?{' '}
                             <Link
                                 href={route('register')}
-                                className="font-semibold text-teal-600 hover:text-teal-700 transition-colors duration-300"
+                                className="font-semibold text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 transition-colors duration-300"
                             >
                                 Regístrate aquí
                             </Link>
@@ -313,9 +313,5 @@ function LoginContent({ status, canResetPassword }) {
 }
 
 export default function Login(props) {
-    return (
-        <ToastProvider>
-            <LoginContent {...props} />
-        </ToastProvider>
-    );
+    return <LoginContent {...props} />;
 }
