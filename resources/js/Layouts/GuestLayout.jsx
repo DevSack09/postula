@@ -77,7 +77,7 @@ export default function Guest({ children }) {
                             transition={{ duration: 0.2 }}
                         >
                             <Sparkles className="text-teal-600 dark:text-teal-500 transition-colors duration-300" size={32} />
-                            Postula
+                            Recluta
                         </motion.div>
                     </Link>
                 </motion.div>
@@ -99,7 +99,7 @@ export default function Guest({ children }) {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.5, duration: 0.4 }}
                 >
-                    © 2026 Postula. Todos los derechos reservados.
+                    © 2026 Recluta. Todos los derechos reservados.
                 </motion.p>
             </motion.div>
         </div>
