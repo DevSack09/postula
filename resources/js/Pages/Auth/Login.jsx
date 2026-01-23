@@ -12,6 +12,7 @@ import CapsLockIndicator from '@/Components/Login/CapsLockIndicator';
 import ProgressBar from '@/Components/Login/ProgressBar';
 import LoginFooter from '@/Components/Login/LoginFooter';
 import SuccessOverlay from '@/Components/Login/SuccessOverlay';
+import { useLoginValidation } from '@/hooks/useLoginValidation';
 
 // Icono de Google SVG
 const GoogleIcon = ({ size = 20 }) => (
@@ -30,30 +31,21 @@ function LoginContent({ status, canResetPassword }) {
         remember: false,
     });
 
-    const [emailValid, setEmailValid] = useState(false);
-    const [capsLockOn, setCapsLockOn] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [formError, setFormError] = useState(false);
     const formRef = useRef(null);
+
+    const { emailValid, capsLockOn, isFormValid, getEmailInitial, handleKeyPress } = useLoginValidation(
+        data.email,
+        data.password,
+        errors
+    );
 
     useEffect(() => {
         return () => {
             reset('password');
         };
     }, []);
-
-    // Validación en tiempo real del email
-    useEffect(() => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        setEmailValid(emailRegex.test(data.email) && data.email.length > 0);
-    }, [data.email]);
-
-    // Detectar Caps Lock
-    const handleKeyPress = (e) => {
-        if (e.getModifierState) {
-            setCapsLockOn(e.getModifierState('CapsLock'));
-        }
-    };
 
     // Mostrar errores con toast
     useEffect(() => {
@@ -66,14 +58,6 @@ function LoginContent({ status, canResetPassword }) {
             setTimeout(() => setFormError(false), 500);
         }
     }, [errors]);
-
-    // Avatar placeholder
-    const getEmailInitial = () => {
-        return emailValid && data.email ? data.email.charAt(0).toUpperCase() : null;
-    };
-
-    // Validar si el formulario está completo y es válido
-    const isFormValid = emailValid && data.password.length > 0 && !errors.email && !errors.password;
 
     const submit = (e) => {
         e.preventDefault();
