@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "recluta/recluta-v1",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Sistema de reclutamiento y gestión de candidatos.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {

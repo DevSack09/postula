@@ -1,4 +1,5 @@
 {
+    "name": "recluta-v1",
     "private": true,
     "type": "module",
     "scripts": {
