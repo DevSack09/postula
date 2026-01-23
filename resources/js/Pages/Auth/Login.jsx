@@ -2,12 +2,12 @@ import { useEffect, useState, useRef } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Lock, LogIn, AlertCircle } from 'lucide-react';
+import { toast } from 'react-toastify';
 import GuestLayout from '@/Layouts/GuestLayout';
 import AnimatedInput from '@/Components/Login/AnimatedInput';
 import AnimatedButton from '@/Components/Login/AnimatedButton';
 import AnimatedCheckbox from '@/Components/Login/AnimatedCheckbox';
 import SocialLoginButton from '@/Components/Login/SocialLoginButton';
-import { ToastProvider, useToast } from '@/Components/Login/ToastProvider';
 import CapsLockIndicator from '@/Components/Login/CapsLockIndicator';
 import ProgressBar from '@/Components/Login/ProgressBar';
 import LoginFooter from '@/Components/Login/LoginFooter';
@@ -24,7 +24,6 @@ const GoogleIcon = ({ size = 20 }) => (
 );
 
 function LoginContent({ status, canResetPassword }) {
-    const { showToast } = useToast();
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -61,12 +60,12 @@ function LoginContent({ status, canResetPassword }) {
         if (Object.keys(errors).length > 0) {
             setFormError(true);
             const errorMessage = errors.email || errors.password || 'Error al iniciar sesión';
-            showToast(errorMessage, 'error');
+            toast.error(errorMessage);
             
             // Reset shake animation
             setTimeout(() => setFormError(false), 500);
         }
-    }, [errors, showToast]);
+    }, [errors]);
 
     // Avatar placeholder
     const getEmailInitial = () => {
@@ -79,10 +78,7 @@ function LoginContent({ status, canResetPassword }) {
         post(route('login'), {
             onSuccess: () => {
                 setShowSuccess(true);
-                showToast('¡Inicio de sesión exitoso!', 'success');
-            },
-            onError: () => {
-                showToast('Credenciales incorrectas', 'error');
+                toast.success('¡Inicio de sesión exitoso!');
             }
         });
     };
