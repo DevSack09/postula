@@ -72,6 +72,9 @@ function LoginContent({ status, canResetPassword }) {
         return emailValid && data.email ? data.email.charAt(0).toUpperCase() : null;
     };
 
+    // Validar si el formulario está completo y es válido
+    const isFormValid = emailValid && data.password.length > 0 && !errors.email && !errors.password;
+
     const submit = (e) => {
         e.preventDefault();
         
@@ -245,7 +248,7 @@ function LoginContent({ status, canResetPassword }) {
                             loading={processing}
                             icon={LogIn}
                             className="w-full"
-                            disabled={processing}
+                            disabled={processing || !isFormValid}
                             aria-label="Iniciar sesión"
                         >
                             {processing ? 'Iniciando sesión...' : 'Iniciar Sesión'}
