@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, EyeOff, CheckCircle2 } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 
 export default forwardRef(function AnimatedInput({ 
     type = 'text', 
@@ -60,14 +60,13 @@ export default forwardRef(function AnimatedInput({
                     className={`
                         w-full px-4 py-3.5 
                         ${Icon ? 'pl-12' : 'pl-4'}
-                        ${showPasswordToggle || isValid ? 'pr-12' : 'pr-4'}
+                        ${showPasswordToggle ? 'pr-12' : 'pr-4'}
                         bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700
                         rounded-lg
                         text-slate-900 dark:text-white
                         focus:bg-white dark:focus:bg-slate-900 focus:border-teal-600 dark:focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-600/10 dark:focus:ring-teal-500/20
                         transition-all duration-300
                         ${error ? 'border-red-400 focus:border-red-500' : ''}
-                        ${isValid && !error ? 'border-teal-500 dark:border-teal-600' : ''}
                         ${className}
                     `}
                     ref={input}
@@ -85,18 +84,16 @@ export default forwardRef(function AnimatedInput({
                     <motion.button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-200 z-10"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-200 z-10 flex items-center justify-center w-5 h-5"
                         tabIndex={-1}
                     >
                         <AnimatePresence mode="wait">
                             {showPassword ? (
                                 <motion.div
                                     key="eye-off"
-                                    initial={{ opacity: 0, rotate: -90 }}
-                                    animate={{ opacity: 1, rotate: 0 }}
-                                    exit={{ opacity: 0, rotate: 90 }}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
                                     transition={{ duration: 0.2 }}
                                 >
                                     <EyeOff size={18} />
@@ -104,9 +101,9 @@ export default forwardRef(function AnimatedInput({
                             ) : (
                                 <motion.div
                                     key="eye"
-                                    initial={{ opacity: 0, rotate: -90 }}
-                                    animate={{ opacity: 1, rotate: 0 }}
-                                    exit={{ opacity: 0, rotate: 90 }}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
                                     transition={{ duration: 0.2 }}
                                 >
                                     <Eye size={18} />
@@ -116,16 +113,7 @@ export default forwardRef(function AnimatedInput({
                     </motion.button>
                 )}
 
-                {/* Valid indicator */}
-                {isValid && !error && !showPasswordToggle && (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-teal-600 z-10"
-                    >
-                        <CheckCircle2 size={18} />
-                    </motion.div>
-                )}
+                {/* Valid indicator - Removido */}
                 
                 <motion.label
                     className={`
