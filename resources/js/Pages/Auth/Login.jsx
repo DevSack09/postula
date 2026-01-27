@@ -232,7 +232,7 @@ function LoginContent({ status, canResetPassword }) {
                             loading={processing}
                             icon={LogIn}
                             className="w-full"
-                            disabled={processing || !isFormValid}
+                            disabled={processing}
                             aria-label="Iniciar sesión"
                         >
                             {processing ? 'Iniciando sesión...' : 'Iniciar Sesión'}

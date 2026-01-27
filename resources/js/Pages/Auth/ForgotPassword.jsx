@@ -104,7 +104,7 @@ function ForgotPasswordContent({ status }) {
                                 loading={processing}
                                 icon={Mail}
                                 className="w-full"
-                                disabled={processing || !isFormValid}
+                                disabled={processing}
                                 aria-label="Enviar enlace de recuperación"
                             >
                                 {processing ? 'Enviando...' : 'Enviar Enlace de Recuperación'}

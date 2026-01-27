@@ -227,7 +227,7 @@ function RegisterContent() {
                                 loading={processing}
                                 icon={UserPlus}
                                 className="w-full"
-                                disabled={processing || !isFormValid}
+                                disabled={processing}
                                 aria-label="Registrarse"
                             >
                                 {processing ? 'Registrando...' : 'Registrarse'}
