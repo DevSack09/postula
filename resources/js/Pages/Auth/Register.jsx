@@ -1,12 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Mail, Lock, UserPlus } from 'lucide-react';
+import { User, Mail, UserPlus } from 'lucide-react';
 import { toast } from 'react-toastify';
 import GuestLayout from '@/Layouts/GuestLayout';
 import AnimatedInput from '@/Components/Login/AnimatedInput';
 import AnimatedButton from '@/Components/Login/AnimatedButton';
-import CapsLockIndicator from '@/Components/Login/CapsLockIndicator';
 import ProgressBar from '@/Components/Login/ProgressBar';
 import SuccessOverlay from '@/Components/Login/SuccessOverlay';
 import AuthHeader from '@/Components/Shared/AuthHeader';
@@ -17,19 +16,18 @@ import FormField from '@/Components/Shared/FormField';
 function RegisterContent() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
+        primer_apellido: '',
+        segundo_apellido: '',
         email: '',
-        password: '',
-        password_confirmation: '',
     });
 
     const [showSuccess, setShowSuccess] = useState(false);
     const [formError, setFormError] = useState(false);
-    const [capsLockOn, setCapsLockOn] = useState(false);
     const formRef = useRef(null);
 
     useEffect(() => {
         return () => {
-            reset('password', 'password_confirmation');
+            reset();
         };
     }, []);
 
@@ -39,34 +37,17 @@ function RegisterContent() {
         return emailRegex.test(data.email) && data.email.length > 0;
     };
 
-    // Validación de contraseña
-    const isPasswordValid = () => {
-        return data.password && data.password.length >= 8;
-    };
-
-    // Validación de confirmación
-    const isPasswordConfirmationValid = () => {
-        return data.password_confirmation === data.password && data.password_confirmation.length > 0;
-    };
-
     // Validar si el formulario está completo
     const isFormValid = 
         data.name && 
         data.name.trim().length > 0 &&
+        data.primer_apellido && 
+        data.primer_apellido.trim().length > 0 &&
         isEmailValid() && 
-        isPasswordValid() && 
-        isPasswordConfirmationValid() &&
         !errors.name &&
-        !errors.email &&
-        !errors.password &&
-        !errors.password_confirmation;
-
-    // Detectar Caps Lock
-    const handleKeyPress = (e) => {
-        if (e.getModifierState) {
-            setCapsLockOn(e.getModifierState('CapsLock'));
-        }
-    };
+        !errors.primer_apellido &&
+        !errors.segundo_apellido &&
+        !errors.email;
 
     // Mostrar errores con toast
     useEffect(() => {
@@ -117,18 +98,18 @@ function RegisterContent() {
                     />
 
                     {/* Form */}
-                    <form onSubmit={submit} className="space-y-5" onKeyDown={handleKeyPress} onKeyUp={handleKeyPress}>
+                    <form onSubmit={submit} className="space-y-5">
                         {/* Name Field */}
                         <FormField delay={0.5}>
                             <AnimatedInput
                                 id="name"
                                 type="text"
                                 name="name"
-                                label="Nombre Completo"
+                                label="Nombre(s)"
                                 icon={User}
                                 value={data.name}
                                 error={errors.name}
-                                autoComplete="name"
+                                autoComplete="given-name"
                                 isFocused={true}
                                 disabled={processing}
                                 onChange={(e) => setData('name', e.target.value)}
@@ -137,8 +118,44 @@ function RegisterContent() {
                             />
                         </FormField>
 
-                        {/* Email Field */}
+                        {/* Primer Apellido Field */}
                         <FormField delay={0.55}>
+                            <AnimatedInput
+                                id="primer_apellido"
+                                type="text"
+                                name="primer_apellido"
+                                label="Primer Apellido"
+                                icon={User}
+                                value={data.primer_apellido}
+                                error={errors.primer_apellido}
+                                autoComplete="family-name"
+                                disabled={processing}
+                                onChange={(e) => setData('primer_apellido', e.target.value)}
+                                aria-required="true"
+                                aria-invalid={errors.primer_apellido ? 'true' : 'false'}
+                            />
+                        </FormField>
+
+                        {/* Segundo Apellido Field */}
+                        <FormField delay={0.6}>
+                            <AnimatedInput
+                                id="segundo_apellido"
+                                type="text"
+                                name="segundo_apellido"
+                                label="Segundo Apellido (Opcional)"
+                                icon={User}
+                                value={data.segundo_apellido}
+                                error={errors.segundo_apellido}
+                                autoComplete="family-name"
+                                disabled={processing}
+                                onChange={(e) => setData('segundo_apellido', e.target.value)}
+                                aria-required="false"
+                                aria-invalid={errors.segundo_apellido ? 'true' : 'false'}
+                            />
+                        </FormField>
+
+                        {/* Email Field */}
+                        <FormField delay={0.65}>
                             <AnimatedInput
                                 id="email"
                                 type="email"
@@ -155,72 +172,11 @@ function RegisterContent() {
                             />
                         </FormField>
 
-                        {/* Password Field */}
-                        <FormField delay={0.6}>
-                            <AnimatedInput
-                                id="password"
-                                type="password"
-                                name="password"
-                                label="Contraseña"
-                                icon={Lock}
-                                value={data.password}
-                                error={errors.password}
-                                showPasswordToggle={true}
-                                autoComplete="new-password"
-                                disabled={processing}
-                                onChange={(e) => setData('password', e.target.value)}
-                                onKeyDown={(e) => {
-                                    handleKeyPress(e);
-                                    if (e.key === 'Enter') {
-                                        submit(e);
-                                    }
-                                }}
-                                aria-required="true"
-                                aria-invalid={errors.password ? 'true' : 'false'}
-                            />
-                            <AnimatePresence>
-                                {capsLockOn && <CapsLockIndicator show={capsLockOn} />}
-                            </AnimatePresence>
-                            <motion.p
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.65, duration: 0.3 }}
-                                className="text-xs text-slate-500 dark:text-slate-400 mt-1"
-                            >
-                                Mínimo 8 caracteres
-                            </motion.p>
-                        </FormField>
-
-                        {/* Password Confirmation Field */}
-                        <FormField delay={0.65}>
-                            <AnimatedInput
-                                id="password_confirmation"
-                                type="password"
-                                name="password_confirmation"
-                                label="Confirmar Contraseña"
-                                icon={Lock}
-                                value={data.password_confirmation}
-                                error={errors.password_confirmation}
-                                showPasswordToggle={true}
-                                autoComplete="new-password"
-                                disabled={processing}
-                                onChange={(e) => setData('password_confirmation', e.target.value)}
-                                onKeyDown={(e) => {
-                                    handleKeyPress(e);
-                                    if (e.key === 'Enter') {
-                                        submit(e);
-                                    }
-                                }}
-                                aria-required="true"
-                                aria-invalid={errors.password_confirmation ? 'true' : 'false'}
-                            />
-                        </FormField>
-
                         {/* Submit Button */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ delay: 0.75, duration: 0.4 }}
+                            transition={{ delay: 0.7, duration: 0.4 }}
                         >
                             <AnimatedButton
                                 type="submit"
