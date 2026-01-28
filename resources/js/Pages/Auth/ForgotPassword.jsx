@@ -61,7 +61,7 @@ function ForgotPasswordContent({ status }) {
                     <AuthStatus status={status} type="success" />
 
                     {/* Descripción adicional */}
-                    <motion.div
+                    {/* <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5, duration: 0.4 }}
@@ -70,7 +70,7 @@ function ForgotPasswordContent({ status }) {
                         <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                             No hay problema si olvidaste tu contraseña. Simplemente envíanos tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
                         </p>
-                    </motion.div>
+                    </motion.div> */}
 
                     {/* Form */}
                     <form onSubmit={submit} className="space-y-5">
