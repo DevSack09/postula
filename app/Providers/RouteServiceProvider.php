@@ -23,8 +23,8 @@ class RouteServiceProvider extends ServiceProvider
      * Route paths by role
      */
     public const ADMIN_HOME = '/admin/dashboard';
-    public const ASPIRANTE_HOME = '/aspirante/formulario';
-    public const MONITOR_HOME = '/monitor/aspirantes';
+    public const ASPIRANTE_HOME = '/aspirante/dashboard';
+    public const MONITOR_HOME = '/monitor/dashboard';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
