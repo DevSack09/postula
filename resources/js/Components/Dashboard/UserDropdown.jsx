@@ -58,14 +58,14 @@ export default function UserDropdown({ user }) {
                 >
                     {getInitials()}
                 </motion.div>
-                <div className="hidden md:block text-left">
+                {/* <div className="hidden md:block text-left">
                     <p className="text-sm font-medium text-slate-700 dark:text-slate-200 leading-tight">
                         {getFullName()}
                     </p>
                     <p className="text-xs text-slate-500 dark:text-slate-400 leading-tight">
                         {user.email}
                     </p>
-                </div>
+                </div> */}
                 <ChevronDown 
                     className={`w-3 h-3 sm:w-4 sm:h-4 text-slate-500 transition-transform duration-200 ${
                         isOpen ? 'rotate-180' : ''
