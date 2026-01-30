@@ -84,7 +84,7 @@ export default function DashboardLayout({ children, navigationItems, role = 'Usu
                         sidebarOpen ? 'lg:ml-64' : 'lg:ml-0'
                     }`}
                 >
-                    <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+                    <div className="p-4 md:p-6 lg:p-8 w-full">
                         {children}
                     </div>
                 </motion.main>
